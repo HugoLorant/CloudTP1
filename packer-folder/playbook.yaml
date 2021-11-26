@@ -1,0 +1,19 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install package GIT
+      package:
+        name: git
+        state: latest 
+    - name: pull golang
+      git:
+        repo: https://github.com/BastienBalaud/golang-myip.git
+        dest: /home/golang
+    - name: makefile golang-myip
+      make:
+        chdir: /home/golang/
+        target: all
+        file: /home/golang/Makefile
+        
+        
