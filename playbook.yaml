@@ -17,7 +17,25 @@
         dest: /opt/golang-myip
    
     - name: make golang-myip
-      ansible.builtin.shell: cd /opt/golang-myip/ && make && ls
+      ansible.builtin.shell: cd /opt/golang-myip/ && make
   
-        
+    - name: copie du service golang-myip
+      ansible.builtin.copy:
+        src: /root/TP1Repo/golang-myip.service
+        dest: /etc/systemd/system/golang-myip.service
+
+    - name: reload du daemon systemd
+      ansible.builtin.systemd:
+        deamon_reload: yes
+
+    - name: enable du service golang-myip
+      ansible.builtin.systemd:
+        name: golang-myip
+        enabled: yes
+
+    - name: demarrage du service golang-myip
+      ansible.builtin.systemd:
+        name: golang-myip
+        state: started
+   
         
