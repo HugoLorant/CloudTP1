@@ -1,0 +1,23 @@
+---
+
+- hosts: all
+  become: yes
+  tasks:
+    - name: Installation des packages git make & go
+      ansible.builtin.package:
+        name: 
+          - git
+          - make
+          - go
+        state: latest 
+
+    - name: pull du repo golang 
+      git:
+        repo: https://github.com/BastienBalaud/golang-myip.git
+        dest: /opt/golang-myip
+   
+    - name: make golang-myip
+      ansible.builtin.shell: cd /opt/golang-myip/ && make && ls
+  
+        
+        
