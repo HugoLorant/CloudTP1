@@ -19,6 +19,27 @@
     - name: make golang-myip
       ansible.builtin.shell: cd /opt/golang-myip/ && make
   
+    - name: Création du ficher golang-myip.service 
+      ansible.builtin.shell: touch opt/golang-myip/golang-myip.service
+  
+    - name: Ajout du contenu du service
+      shell: |
+       echo "[Unit]
+       Description=Service système Golang-MyIP
+       
+       #Ciblage du service réseau
+       After=network.target
+       
+       [Service]
+       #Sélection du répertoire d'éxécution du fichier
+       WorkingDirectory=/opt/golang-myip/
+       ExecStart=/opt/golang-myip/build/server.x86_64
+       
+       [Install]
+       #Installation pour tout les utilisateurs
+       WantedBy=multi-user.target" >> /opt/golang-myip/golang-myip.service
+
+  
     - name: copie du service golang-myip
       ansible.builtin.copy:
         src: /opt/golang-myip/golang-myip.service
@@ -27,6 +48,9 @@
     - name: reload du daemon systemd
       ansible.builtin.systemd:
         deamon_reload: yes
+
+    - name: Autorisation du binaire dans SELinux
+    ansible.builtin.command: restorecon -irv /opt/golang-myip/build/server.x86_64
 
     - name: enable du service golang-myip
       ansible.builtin.systemd:
@@ -39,3 +63,8 @@
         state: started
    
         
+    - name: Ajout clés publiques pour Bastien Balaud
+    authorized_key:
+      user: root
+      state: present
+      key: https://github.com/BastienBalaud.keys
