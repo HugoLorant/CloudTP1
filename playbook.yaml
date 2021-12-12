@@ -20,7 +20,6 @@
       ansible.builtin.shell: cd /opt/golang-myip/ && make
   
     - name: Creation du ficher golang-myip.service 
-     # ansible.builtin.shell: touch /tmp/golang-myip.service
       file:
         path: /tmp/golang-myip.service
         state: touch          
@@ -47,7 +46,7 @@
   
     - name: copie du service golang-myip
       ansible.builtin.shell: mv /tmp/golang-myip.service /etc/systemd/system/golang-myip.service
-
+      
     - name: autorisatisation SElinux pour le service
       ansible.builtin.shell: setenforce 0
       # desactivation temporaire du module de securite linux pour eviter des problemes
