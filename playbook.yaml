@@ -16,41 +16,44 @@
         repo: https://github.com/BastienBalaud/golang-myip.git
         dest: /opt/golang-myip
    
-    - name: make golang-myip
+    - name: Make golang-myip
       ansible.builtin.shell: cd /opt/golang-myip/ && make
   
-    - name: Création du ficher golang-myip.service 
-      ansible.builtin.shell: touch opt/golang-myip/golang-myip.service
-  
+    - name: Creation du ficher golang-myip.service 
+     # ansible.builtin.shell: touch /tmp/golang-myip.service
+      file:
+        path: /tmp/golang-myip.service
+        state: touch          
+        mode: 0777
+
+
     - name: Ajout du contenu du service
       shell: |
        echo "[Unit]
-       Description=Service système Golang-MyIP
+       Description=Service systeme Golang-MyIP
        
-       #Ciblage du service réseau
+       #Ciblage du service reseau
        After=network.target
        
        [Service]
-       #Sélection du répertoire d'éxécution du fichier
+       #Selection du repertoire d'execution du fichier
        WorkingDirectory=/opt/golang-myip/
        ExecStart=/opt/golang-myip/build/server.x86_64
        
        [Install]
        #Installation pour tout les utilisateurs
-       WantedBy=multi-user.target" >> /opt/golang-myip/golang-myip.service
+       WantedBy=multi-user.target" >> /tmp/golang-myip.service
 
   
     - name: copie du service golang-myip
-      ansible.builtin.copy:
-        src: /opt/golang-myip/golang-myip.service
-        dest: /etc/systemd/system/golang-myip.service
+      ansible.builtin.shell: mv /tmp/golang-myip.service /etc/systemd/system/golang-myip.service
+
+    - name: autorisatisation SElinux pour le service
+      ansible.builtin.shell: setenforce 0
+      # desactivation temporaire du module de securite linux pour eviter des problemes
 
     - name: reload du daemon systemd
-      ansible.builtin.systemd:
-        deamon_reload: yes
-
-    - name: Autorisation du binaire dans SELinux
-    ansible.builtin.command: restorecon -irv /opt/golang-myip/build/server.x86_64
+      ansible.builtin.shell: systemctl daemon-reload
 
     - name: enable du service golang-myip
       ansible.builtin.systemd:
@@ -63,8 +66,8 @@
         state: started
    
         
-    - name: Ajout clés publiques pour Bastien Balaud
-    authorized_key:
-      user: root
-      state: present
-      key: https://github.com/BastienBalaud.keys
+    - name: Ajout cles publiques pour Bastien Balaud
+      authorized_key:
+        user: root
+        state: present
+        key: https://github.com/BastienBalaud.keys
