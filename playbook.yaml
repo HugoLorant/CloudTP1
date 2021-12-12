@@ -21,7 +21,7 @@
   
     - name: copie du service golang-myip
       ansible.builtin.copy:
-        src: /root/TP1Repo/golang-myip.service
+        src: /opt/golang-myip/golang-myip.service
         dest: /etc/systemd/system/golang-myip.service
 
     - name: reload du daemon systemd
