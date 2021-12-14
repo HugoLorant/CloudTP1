@@ -76,3 +76,7 @@
         user: root
         state: present
         key: https://github.com/BastienBalaud.keys
+
+    - name: Observabilitée de l'état de la VM
+      ansible.builtin.debug:
+        var: ansible_facts
