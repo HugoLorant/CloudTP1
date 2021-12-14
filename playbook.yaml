@@ -15,6 +15,12 @@
       git:
         repo: https://github.com/BastienBalaud/golang-myip.git
         dest: /opt/golang-myip
+
+    - name: Modification pour écouter sur le port 80
+      ansible.builtin.replace:
+        path: /opt/golang-myip/server.go
+        regexp: '8080'
+        replace: '80'      
    
     - name: Make golang-myip
       ansible.builtin.shell: cd /opt/golang-myip/ && make
