@@ -1,9 +1,9 @@
 # CloudTP1 Hugo LORANT
 
 ## Prérequis
- - Le fichier Rocky-8.4-x86_64-minimal.iso doit etre present dans le dossier CloudTP1
+ - Le fichier Rocky-8.4-x86_64-minimal.iso doit être present dans le dossier CloudTP1
  - Ansible doit être installé
- - La Collection ansible-collection-ansible-posix doit être installé sur la machine hôte : dnf install ansible-collection-ansible-posix -y
+ - La Collection ansible-collection-ansible-posix doit être installé sur la machine hôte : ```dnf install ansible-collection-ansible-posix -y```
 
 ## Lancer le build
 Pour lancer le build, il faut utiliser la commande suivante dans le répertoire TP1Repo
@@ -11,7 +11,7 @@ Pour lancer le build, il faut utiliser la commande suivante dans le répertoire 
 packer build rocky-8.pkr.hcl
 ```
 
-## Exemple d'éxécution
+## Exemple d'exécution
 ```
 [root@template TP1Repo]# packer build rocky-8.pkr.hcl
 qemu.example: output will be in this color.
