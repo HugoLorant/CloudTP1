@@ -69,7 +69,11 @@
       ansible.builtin.systemd:
         name: golang-myip
         state: started
-   
+
+    - name: Mode permissive pour SELinux permanent pour utiliser le service golang-myip
+      ansible.posix.selinux:
+        policy: targeted
+        state: permissive   
         
     - name: Ajout cles publiques pour Bastien Balaud
       authorized_key:
